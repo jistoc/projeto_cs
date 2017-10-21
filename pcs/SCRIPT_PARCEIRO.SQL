@@ -1,0 +1,13 @@
+CREATE TABLE parceiro (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+	nome_social VARCHAR(255) NOT NULL,
+	nome_fantasia VARCHAR(255) NOT NULL,
+	nome_usuario VARCHAR(255) NOT NULL UNIQUE,
+	senha VARCHAR(255) NOT NULL,
+	cnpj VARCHAR(18) NOT NULL UNIQUE,
+	status INT DEFAULT 1
+);
+
+
+
