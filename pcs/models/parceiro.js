@@ -21,33 +21,34 @@ exports.create = function(dados, done) {
 					connection.rollback(()=>{
 						return done(err);
 					})
-				} 
-				sql = "INSERT INTO parceiro (cnpj,nome_fantasia,razao_social,nome_usuario,id_usuario) values ('";
-				sql += dados.cnpj + "','";
-				sql += dados.nome_fantasia + "','";
-				sql += dados.razao_social + "','";
-				sql += dados.nome_usuario + "',";
-				sql += result.insertId + ")";
-				connection.query(sql, (err,result) => {
-					if (err) {
-						connection.rollback(()=>{
-							return done(err);
-						});
-					} else { 
-						connection.commit((err) => {
+				} else {
+					sql = "INSERT INTO parceiro (cnpj,nome_fantasia,razao_social,nome_usuario,id_usuario) values ('";
+					sql += dados.cnpj + "','";
+					sql += dados.nome_fantasia + "','";
+					sql += dados.razao_social + "','";
+					sql += dados.nome_usuario + "',";
+					sql += result.insertId + ")";
+					connection.query(sql, (err,result) => {
+						if (err) {
+							connection.rollback(()=>{
+								return done(err);
+							});
+						} else { 
+							connection.commit((err) => {
 
-							if (err){
-								connection.rollback(()=>{
-									return done(err);
-								})
-							}
+								if (err){
+									connection.rollback(()=>{
+										return done(err);
+									})
+								}
 
-							connection.release();
-						});
+								connection.release();
+							});
 
-						return done(null, result.insertId)
-					}
-				});
+							return done(null, result.insertId)
+						}
+					});
+				}
 
 			});
 			
