@@ -4,7 +4,7 @@ module.exports = {
 	novo : (req,res,next) => {
 
 
-		if( !req.body.email || !req.body.nome_social || 
+		if( !req.body.email || !req.body.razao_social || 
 		    !req.body.senha || !req.body.nome_fantasia || 
 		    !req.body.nome_usuario || !req.body.cnpj ){
 
@@ -14,7 +14,7 @@ module.exports = {
 		}
 
 		req.checkBody("email", "E-mail inválido!").isEmail();
-		req.checkBody("nome_social", "Nome social inválido!").isLength({ max: 255 });
+		req.checkBody("razao_social", "Nome social inválido!").isLength({ max: 255 });
 		req.checkBody("nome_fantasia", "Nome Fantasia inválido!").isLength({ max: 255});
 		req.checkBody("nome_usuario", "Usuário inválido!").isLength({ max: 255 });
 		req.checkBody("senha", "Sennha inválida!").isLength({ max: 255 });
@@ -53,7 +53,7 @@ module.exports = {
 
 			 		}
 
-			 		res.status(500).json({message: msg});
+			 		res.status(500).json({message: err});
 			 	}
 			 	else
 			 		res.status(200).json({message:'ID ' + id + ' cadastrado'});

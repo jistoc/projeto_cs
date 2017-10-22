@@ -18,14 +18,14 @@
 							<th>Nome Social</th>
 							<th>CNJP</th>
 							<th>E-mail</th>
-							<th>Usuáio</th>
+							<th>Usuário</th>
 							<th>Senha</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="p in parceiros">
 							<td>{{p.nome_fantasia}}</td>
-							<td>{{p.nome_social}}</td>
+							<td>{{p.razao_social}}</td>
 							<td>{{p.cnpj}}</td>
 							<td>{{p.email}}</td>
 							<td>{{p.nome_usuario}}</td>

@@ -38,11 +38,11 @@
 								<div class="control">
 									<input  class="input is-large" 
 									type="text" 
-									placeholder="Nome Social"
-									v-model="nome_social" 
-									:class="{'is-danger': validation.hasError('nome_social')}">
+									placeholder="Razão Social"
+									v-model="razao_social" 
+									:class="{'is-danger': validation.hasError('razao_social')}">
 
-									<span v-if="validation.firstError('nome_social')" class="text-danger">{{ validation.firstError('nome_social') }}</span>
+									<span v-if="validation.firstError('razao_social')" class="text-danger">{{ validation.firstError('razao_social') }}</span>
 								</div>
 							</div>
 							<div class="field">
@@ -106,7 +106,7 @@ export default {
 	data : () => {
 		return {
 			email : '', 
-			nome_social : '', 
+			razao_social : '', 
 			nome_fantasia : '', 
 			nome_usuario : '', 
 			senha : '', 
@@ -131,7 +131,7 @@ export default {
 		nome_fantasia: function (value) {
 			return Validator.value(value).required().maxLength(255);
 		},
-		nome_social: function (value) {
+		razao_social: function (value) {
 			return Validator.value(value).required().maxLength(255);
 		},
 		senha: function (value) {
@@ -156,7 +156,7 @@ export default {
 				email : this.email,
 				nome_usuario : this.nome_usuario,
 				nome_fantasia : this.nome_fantasia,
-				nome_social : this.nome_social,
+				razao_social : this.razao_social,
 				senha : this.senha
 			}
 			this.$http.post(api_url + 'parceiro', dados)
