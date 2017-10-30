@@ -8,7 +8,9 @@ import VueMask from 'v-mask';
 import SimpleVueValidation from 'simple-vue-validator';
 import erros_pt from './erros_pt';
 
-window.api_url = 'http://localhost:8085/api/v1/';
+//window.api_url = 'http://10.20.8.42:80/parceiro';
+
+window.api_url = '/api/v1/';
 
 SimpleVueValidation.extendTemplates(erros_pt);
 window.Validator = SimpleVueValidation.Validator;

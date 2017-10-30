@@ -18,7 +18,7 @@
 							<div v-if="sucesso"class="message is-success">
 
 								<div class="message-body text-left">
-									Parceiro cadastrado com sucesso!<br>
+									{{msg}}<br>
 									<router-link to="lista-parceiros">Listar Parceiros</router-link>
 								</div>
 							</div>
@@ -31,7 +31,7 @@
 									v-model="nome_fantasia"
 									:class="{'is-danger': validation.hasError('nome_fantasia')}">
 
-									<span v-if="validation.firstError('nome_fantasia')" class="text-danger">{{ validation.firstError('nome_fantasia') }}</span>
+									<span v-if="validation.firstError('nome_fantasia_a')" class="text-danger">{{ validation.firstError('nome_fantasia_a') }}</span>
 								</div>
 							</div>
 							<div class="field">
@@ -42,7 +42,7 @@
 									v-model="razao_social" 
 									:class="{'is-danger': validation.hasError('razao_social')}">
 
-									<span v-if="validation.firstError('razao_social')" class="text-danger">{{ validation.firstError('razao_social') }}</span>
+									<span v-if="validation.firstError('razao_social_a')" class="text-danger">{{ validation.firstError('razao_social_a') }}</span>
 								</div>
 							</div>
 							<div class="field">
@@ -52,9 +52,9 @@
 									type="text" 
 									placeholder="CNPJ"
 									v-model="cnpj"
-									:class="{'is-danger': validation.hasError('cnpj')}">
+									:class="{'is-danger': validation.hasError('cnpj_a')}">
 
-									<span v-if="validation.firstError('cnpj')" class="text-danger">{{ validation.firstError('cnpj') }}</span>
+									<span v-if="validation.firstError('cnpj_a')" class="text-danger">{{ validation.firstError('cnpj') }}</span>
 								</div>
 							</div>
 							<div class="field">
@@ -63,9 +63,9 @@
 									type="email" 
 									placeholder="E-mail"
 									v-model="email"
-									:class="{'is-danger': validation.hasError('email')}" >
+									:class="{'is-danger': validation.hasError('email_a')}" >
 
-									<span v-if="validation.firstError('email')" class="text-danger">{{ validation.firstError('email') }}</span>
+									<span v-if="validation.firstError('email_a')" class="text-danger">{{ validation.firstError('email') }}</span>
 								</div>
 							</div>
 							<div class="field">
@@ -74,9 +74,9 @@
 									type="text" 
 									placeholder="Usuário"
 									v-model="nome_usuario" 
-									:class="{'is-danger': validation.hasError('nome_usuario')}" >
+									:class="{'is-danger': validation.hasError('nome_usuario_a')}" >
 
-									<span v-if="validation.firstError('nome_usuario')" class="text-danger">{{ validation.firstError('nome_usuario') }}</span>
+									<span v-if="validation.firstError('nome_usuario_a')" class="text-danger">{{ validation.firstError('nome_usuario_a') }}</span>
 								</div>
 							</div>
 
@@ -86,9 +86,9 @@
 									type="password" 
 									placeholder="Senha"
 									v-model="senha"
-									:class="{'is-danger': validation.hasError('senha')}" >
+									:class="{'is-danger': validation.hasError('senha_a')}" >
 
-									<span v-if="validation.firstError('senha')" class="text-danger">{{ validation.firstError('senha') }}</span>
+									<span v-if="validation.firstError('senha_a')" class="text-danger">{{ validation.firstError('senha') }}</span>
 								</div>
 							</div>
 							<a class="button is-block is-info is-large" 
@@ -115,7 +115,8 @@ export default {
 				status : false,
 				mensagem : 'Falha ao enviar formuário'
 			},
-			sucesso : false		
+			sucesso : false,
+			msg : ''	
 		}
 	},
 	validators: {
@@ -140,7 +141,7 @@ export default {
 	},
 	methods: {
 		validateBeforeSubmit() {
-			this.$validate()
+			/*this.$validate()
 			.then( (success) => {
 				if (success) {
 					this.enviarForm();
@@ -148,7 +149,9 @@ export default {
 			})
 			.catch(err => {	
 				console.log(err);
-			});
+			});*/
+
+					this.enviarForm();		
 		},
 		enviarForm(){
 			let dados = {
@@ -164,6 +167,9 @@ export default {
 				if(result.status == 200){
 					this.falha.status = false;
 					this.sucesso = true;
+					this.msg = result.body.message;
+					console.log(result)
+
 				}
 			})
 			.catch( err => {

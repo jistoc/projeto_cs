@@ -47,7 +47,7 @@ module.exports = {
 									msg = 'Usuário';
 
 								msg += " já cadastrado!";
-								res.status(409).json({message: msg});
+								res.status(422).json({message: msg});
 								return;
 			 				break;
 
