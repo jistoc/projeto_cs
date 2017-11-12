@@ -1,36 +1,25 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
-import LoginComponent from './components/login-component.vue';
-import CadParceiroComponent from './components/cadparceiro-component.vue';
-import ListaParceirosComponent from './components/listaparceiros-component.vue';
 import VueMask from 'v-mask';
 import SimpleVueValidation from 'simple-vue-validator';
 import erros_pt from './erros_pt';
+import router from './router';
 
 //window.api_url = 'http://10.20.8.42:80/parceiro';
 
-window.api_url = '/api/v1/';
+window.api_url = 'http://192.168.25.6:3000/api/v1/';
 
 SimpleVueValidation.extendTemplates(erros_pt);
 window.Validator = SimpleVueValidation.Validator;
-Vue.use(SimpleVueValidation);
 
+Vue.use(SimpleVueValidation);
 Vue.use(VueMask);
 Vue.use(VueResource);
 Vue.use(VueRouter);
 
-
-window.router = new VueRouter({
-  routes : [
-    { name : 'login', path : '/login', component: LoginComponent },
-    { name : 'cadastro', path : '/cadastro', component: CadParceiroComponent },
-    { name : 'lista-parceiros', path : '/lista-parceiros', component: ListaParceirosComponent }
-
-  ],
-  mode : 'hash'
-});
-
+window.usuario = { nome_usuario : false };
+window.router = router;
 window.Vue = new Vue({
 	el: "#app",
 	router : router,
@@ -43,5 +32,3 @@ window.Vue = new Vue({
 		}
 	}
 });
-
-//https://github.com/hootlex/vuejs-form-validation-example/blob/master/src/App.vue

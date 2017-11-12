@@ -51,7 +51,7 @@ export default {
 
 	},
 	beforeMount(){
-		this.$http.get(api_url + 'parceiro/all')
+		this.$http.get(api_url + 'parceiro')
 		.then( result => {
 			if(result.status == 200){
 				this.parceiros = result.body;

@@ -1,16 +1,15 @@
 const Parceiro = require('../models/parceiro');
-
+const decode = require('jwt-decode');
 module.exports = {
 	novo : (req,res,next) => {
 
 
 		if( !req.body.email || !req.body.razao_social || 
-		    !req.body.senha || !req.body.nome_fantasia || 
-		    !req.body.nome_usuario || !req.body.cnpj ){
+			!req.body.senha || !req.body.nome_fantasia || 
+			!req.body.nome_usuario || !req.body.cnpj ){
 
 			res.status(400).json({message : "corpo do pedido inválido!"});
 			return;
-
 		}
 
 		req.checkBody("email", "E-mail inválido!").isEmail();
@@ -31,32 +30,32 @@ module.exports = {
 			res.status(422).json({message : msg});
 		} else {
 			Parceiro.create(req.body, (err,id) => {
-				
+
 				let msg = 'Falha Interna';
-			 	if(err) {
-			 		
-			 		switch(err.errno){
-			 			case 1062 :
-								msg =  err.sqlMessage
-											.substring(err.sqlMessage.indexOf("key ")+4)
-											.toUpperCase()
-											.replace("'","")
-											.replace("'","");
+				if(err) {
 
-								if(msg=='NOME_USUARIO')
-									msg = 'Usuário';
+					switch(err.errno){
+						case 1062 :
+						msg =  err.sqlMessage
+						.substring(err.sqlMessage.indexOf("key ")+4)
+						.toUpperCase()
+						.replace("'","")
+						.replace("'","");
 
-								msg += " já cadastrado!";
-								res.status(422).json({message: msg});
-								return;
-			 				break;
+						if(msg=='NOME_USUARIO')
+							msg = 'Usuário';
 
-			 		}
+						msg += " já cadastrado!";
+						res.status(422).json({message: msg});
+						return;
+						break;
 
-			 		res.status(500).json({message: err});
-			 	}
-			 	else
-			 		res.status(200).json({message:'ID ' + id + ' cadastrado'});
+					}
+
+					res.status(500).json({message: err});
+				}
+				else
+					res.status(200).json({message:'ID ' + id + ' cadastrado'});
 			});	
 		}
 
@@ -66,10 +65,137 @@ module.exports = {
 	},
 	listar : (req,res,next) => {
 		Parceiro.getAll( (err,parceiros) => {
-		 	if(err) 
-		 		res.status(500).json({message:err});
-		 	else
-		 		res.status(200).json(parceiros);
+			if(err) 
+				res.status(500).json({message:err});
+			else
+				res.status(200).json(parceiros);
 		});	
+	},
+	alterar : (req,res,next) => {
+
+
+		Parceiro.checkToken(req.headers['authorization'], (err,rows) => {
+			if(rows.length>0){
+				return res.status(401).json({message:'Token inválido!'});
+			} else {
+				if( !req.body.email || !req.body.razao_social || 
+					!req.body.senha || !req.body.nome_fantasia){
+
+					res.status(400).json({message : "corpo do pedido inválido!"});
+				return;
+			}
+
+			req.checkBody("email", "E-mail inválido!").isEmail();
+			req.checkBody("razao_social", "Nome social inválido!").isLength({ max: 255 });
+			req.checkBody("nome_fantasia", "Nome Fantasia inválido!").isLength({ max: 255});
+			req.checkBody("senha", "Sennha inválida!").isLength({ max: 255 });
+
+
+			let errors = req.validationErrors();
+
+			if (errors) {
+				let msg = '';
+				errors.forEach((erro) => {
+					msg += erro.msg + '<br>';
+				});
+				res.status(422).json({message : msg});
+			} else {
+				let token = decode(req.headers['authorization']);
+				let dados = req.body;
+				dados.id_usuario = token.id_usuario;
+				Parceiro.alterar(dados, (err,result) => {
+					if(result>0){
+
+						return res.status(200).json({message:'Dados alterados com sucesso!'});
+					}
+					if(err){
+						res.status(500).json({message:'Falha ao alterar dados!'});
+					}
+				})
+			}
+		}
+	});
+
+
+	},
+	login : (req,res,next) => {
+		if( !req.body.nome_usuario || !req.body.senha) {
+			res.status(400).json({message : "corpo do pedido inválido!"});
+			return;
+		}
+
+
+		req.checkBody("nome_usuario", "Usuário inválido!").isLength({ max: 255 });
+		req.checkBody("senha", "Senha inválida!").isLength({ max: 255 });
+		let errors = req.validationErrors();
+
+		if (errors) {
+			let msg = '';
+			errors.forEach((erro) => {
+				msg += erro.msg + '<br>';
+			});
+			res.status(422).json({message : msg});
+		} else {	
+			Parceiro.login({nome_usuario : req.body.nome_usuario, senha : req.body.senha}, (err,result) => {
+				if(err){
+					switch(err){
+						case 404 : res.status(404).json({message : 'Usuário não cadastrado!'}); break;
+						case 401 : res.status(404).json({message : 'Senha inválida!'}); break;
+						default : res.status(500).json({message : 'Erro interno!'}); break;
+					}
+				} else {
+
+					res.status(200).json({token : "JWT " +result});
+				}
+
+			})
+		}
+
+	},
+	logout : (req,res,next) => {
+
+		Parceiro.checkToken(req.headers['authorization'], (err,rows) => {
+			if(rows.length>0){
+				return res.status(401).json({message:'Token inválido!'});
+			} else {
+				Parceiro.logout(req.headers['authorization'], (err,result) => {
+
+					if(result>0){
+						return res.status(200).json({message:'Logout realizado com sucesso!'});
+					}
+					if(err){
+						console.log(err)
+						res.status(500).json({message:'Falha ao realizar logout!'});
+					}
+				})
+			}
+		});
+
+
+
+	},
+	remover : (req,res,next) => {
+		let token = decode(req.headers['authorization']);
+		Parceiro.remover(token.id_usuario, (err,result) => {
+			if(result>0){
+
+				return res.status(200).json({message:'Usuário removido com sucesso!'});
+			}
+			if(err){
+				res.status(500).json({message:'Falha ao remover usuário!'});
+			}
+		})
+	},
+	getParca : (req,res,next) => {
+		let token = decode(req.headers['authorization']);
+		Parceiro.getUsuario(token.nome, (err,result) => {
+			if(result){
+
+				return res.status(200).json({message: result});
+			}
+			if(err){
+				res.status(500).json({message:'Falha ao acessar usuário!'});
+			}
+		})
 	}
 }

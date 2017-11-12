@@ -20,4 +20,7 @@ CREATE TABLE parceiro (
 );
 
 
-
+CREATE TABLE token_black (
+	token TEXT(1024) NOT NULL,
+	KEY ix_length_token (token(1024))
+);

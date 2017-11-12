@@ -7,7 +7,7 @@
 					<div class="box">
 						<form>	
 							<div id="caption">Novo Parceiro</div>
-							<div v-if="falha.status"class="message is-danger">
+							<div v-if="falha.status" class="message is-danger">
 								<div class="message-header">
 									<p>Falha</p>
 								</div>
