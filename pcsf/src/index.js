@@ -8,8 +8,8 @@ import router from './router';
 
 //window.api_url = 'http://10.20.8.42:80/parceiro';
 
-window.api_url = 'http://192.168.25.6:3000/api/v1/';
-
+window.api_url = 'http://localhost:80/api/v1/';
+//window.api_url = 'http://10.20.2.159:3000/';
 SimpleVueValidation.extendTemplates(erros_pt);
 window.Validator = SimpleVueValidation.Validator;
 

@@ -57,7 +57,7 @@ export default {
 				email : this.email,
 				nome_fantasia : this.nome_fantasia
 			}
-			if(this.senha.length>0){
+			if(this.senha && this.senha.length>0){
 				dados.senha = this.senha;
 			}
 			this.$http.put(api_url + 'parceiro', dados, { 
@@ -66,12 +66,12 @@ export default {
 				}
 			})
 			.then( result => {
-				alert(result.body.message)
+				alert(result.body.mensagem)
 				this.atualizarDados();
 			})
 			.catch( err => {
 				
-				alert(err.body.message)
+				alert(err.body.mensagem)
 
 			});
 		},
@@ -82,13 +82,13 @@ export default {
 				}
 			})
 			.then( result => {
-				alert(result.body.message)
+				alert(result.body.mensagem)
 				localStorage.clear();
 				router.push({name:'login'})
 			})
 			.catch( err => {
 				
-				alert(err.body.message)
+				alert(err.body.mensagem)
 
 			});
 		},
@@ -99,14 +99,14 @@ export default {
 				}
 			})
 			.then( result => {
-				this.nome_fantasia = result.body.message.nome_fantasia;
-				this.razao_social = result.body.message.razao_social;
-				this.email = result.body.message.email;
-				this.senha = result.body.message.senha;
+				this.nome_fantasia = result.body.nome_fantasia;
+				this.razao_social = result.body.razao_social;
+				this.email = result.body.email;
+				this.senha = result.body.senha;
 			})
 			.catch( err => {
 				
-				alert(err.body.message)
+				alert(err.body.mensagem)
 
 			});
 		}

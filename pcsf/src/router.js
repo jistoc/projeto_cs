@@ -5,6 +5,9 @@ import ListaParceirosComponent from './components/listaparceiros-component.vue';
 import AppComponent from './components/app-component.vue';
 import InfoComponent from './components/info-component.vue';
 import AlterarComponent from './components/alterar-component.vue';
+import ClienteComponent from './components/cliente-component.vue';
+import TituloComponent from './components/titulo-component.vue';
+
 
 const router = new VueRouter({
    routes : [
@@ -15,7 +18,11 @@ const router = new VueRouter({
  		children: [
             { path: '/inicio/info', name: 'info', component: InfoComponent },
 
-            { path: '/inicio/alterar', name: 'cad', component: AlterarComponent }
+            { path: '/inicio/alterar', name: 'cad', component: AlterarComponent },
+
+            { path: '/inicio/cliente', name: 'cliente', component: ClienteComponent },
+
+            { path: '/inicio/titulo', name: 'titulo', component: TituloComponent }
         ],
     }
   ],

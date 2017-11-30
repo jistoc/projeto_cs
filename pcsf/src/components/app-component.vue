@@ -1,5 +1,4 @@
 <template>
-	<div>
 		
 
 		<section class="main-content columns is-fullheight">
@@ -18,6 +17,16 @@
 						</router-link>
 					</li>
 					<li>
+						<router-link to="cliente" exact-active-class="is-active">
+							<span class="icon"><i class="fa fa-user"></i></span> Cliente
+						</router-link>
+					</li>
+					<li>
+						<router-link to="titulo" exact-active-class="is-active">
+							<span class="icon"><i class="fa fa-barcode"></i></span> Títulos
+						</router-link>
+					</li>
+					<li>
 						<a href="#" class="" v-on:click="logout">
 							<span class="icon"><i class="fa fa-sign-out"></i></span> Sair
 						</a>
@@ -29,7 +38,6 @@
 
 		</section>
 
-	</div>
 </template>
 
 <script>
@@ -46,13 +54,13 @@ export default {
 				}
 			})
 			.then( result => {
-				alert(result.body.message)
+				alert(result.body.mensagem)
 				localStorage.clear();
 				router.push({name:'login'})
 			})
 			.catch( err => {
 				
-				alert(err.body.message)
+				alert(err.body.mensagem)
 
 			});
 		}

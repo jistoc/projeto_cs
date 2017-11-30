@@ -66,6 +66,19 @@ export default {
 				if(result.status == 200){
 					usuario.nome_usuario = this.nome_usuario;
 					localStorage.setItem('token',result.body.token);
+					this.$http.get(api_url + 'parceiro', { 
+						headers : {
+							Authorization : localStorage.getItem('token')
+						}
+					})
+					.then( result => {
+						localStorage.setItem('id_parceiro',result.body.id_parceiro);
+					})
+					.catch( err => {
+						
+						alert(err.body.mensagem)
+
+					});
 					router.push({name:'info'})
 				}
 			})
@@ -73,7 +86,7 @@ export default {
 				if(err.status){
 					this.sucesso = false;
 					this.falha.status = true;
-					this.falha.mensagem = err.body.message;
+					this.falha.mensagem = err.body.mensagem;
 				}
 			});
 		}

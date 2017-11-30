@@ -8,7 +8,7 @@ module.exports = {
 			!req.body.senha || !req.body.nome_fantasia || 
 			!req.body.nome_usuario || !req.body.cnpj ){
 
-			res.status(400).json({message : "corpo do pedido inválido!"});
+			res.status(400).json({mensagem : "corpo do pedido inválido!"});
 			return;
 		}
 
@@ -27,7 +27,7 @@ module.exports = {
 			errors.forEach((erro) => {
 				msg += erro.msg + '<br>';
 			});
-			res.status(422).json({message : msg});
+			res.status(422).json({mensagem : msg});
 		} else {
 			Parceiro.create(req.body, (err,id) => {
 
@@ -46,27 +46,27 @@ module.exports = {
 							msg = 'Usuário';
 
 						msg += " já cadastrado!";
-						res.status(422).json({message: msg});
+						res.status(422).json({mensagem: msg});
 						return;
 						break;
 
 					}
 
-					res.status(500).json({message: err});
+					res.status(500).json({mensagem: err});
 				}
 				else
-					res.status(200).json({message:'ID ' + id + ' cadastrado'});
+					res.status(200).json({mensagem:'ID ' + id + ' cadastrado'});
 			});	
 		}
 
 	},
 	index : (req,res,next) => {
-		res.json({message:'index parceiro'});
+		res.json({mensagem:'index parceiro'});
 	},
 	listar : (req,res,next) => {
 		Parceiro.getAll( (err,parceiros) => {
 			if(err) 
-				res.status(500).json({message:err});
+				res.status(500).json({mensagem:err});
 			else
 				res.status(200).json(parceiros);
 		});	
@@ -76,12 +76,12 @@ module.exports = {
 
 		Parceiro.checkToken(req.headers['authorization'], (err,rows) => {
 			if(rows.length>0){
-				return res.status(401).json({message:'Token inválido!'});
+				return res.status(401).json({mensagem:'Token inválido!'});
 			} else {
 				if( !req.body.email || !req.body.razao_social || 
 					!req.body.senha || !req.body.nome_fantasia){
 
-					res.status(400).json({message : "corpo do pedido inválido!"});
+					res.status(400).json({mensagem : "corpo do pedido inválido!"});
 				return;
 			}
 
@@ -98,7 +98,7 @@ module.exports = {
 				errors.forEach((erro) => {
 					msg += erro.msg + '<br>';
 				});
-				res.status(422).json({message : msg});
+				res.status(422).json({mensagem : msg});
 			} else {
 				let token = decode(req.headers['authorization']);
 				let dados = req.body;
@@ -106,10 +106,10 @@ module.exports = {
 				Parceiro.alterar(dados, (err,result) => {
 					if(result>0){
 
-						return res.status(200).json({message:'Dados alterados com sucesso!'});
+						return res.status(200).json({mensagem:'Dados alterados com sucesso!'});
 					}
 					if(err){
-						res.status(500).json({message:'Falha ao alterar dados!'});
+						res.status(500).json({mensagem:'Falha ao alterar dados!'});
 					}
 				})
 			}
@@ -120,7 +120,7 @@ module.exports = {
 	},
 	login : (req,res,next) => {
 		if( !req.body.nome_usuario || !req.body.senha) {
-			res.status(400).json({message : "corpo do pedido inválido!"});
+			res.status(400).json({mensagem : "corpo do pedido inválido!"});
 			return;
 		}
 
@@ -134,14 +134,14 @@ module.exports = {
 			errors.forEach((erro) => {
 				msg += erro.msg + '<br>';
 			});
-			res.status(422).json({message : msg});
+			res.status(422).json({mensagem : msg});
 		} else {	
 			Parceiro.login({nome_usuario : req.body.nome_usuario, senha : req.body.senha}, (err,result) => {
 				if(err){
 					switch(err){
-						case 404 : res.status(404).json({message : 'Usuário não cadastrado!'}); break;
-						case 401 : res.status(404).json({message : 'Senha inválida!'}); break;
-						default : res.status(500).json({message : 'Erro interno!'}); break;
+						case 404 : res.status(404).json({mensagem : 'Usuário não cadastrado!'}); break;
+						case 401 : res.status(404).json({mensagem : 'Senha inválida!'}); break;
+						default : res.status(500).json({mensagem : 'Erro interno!'}); break;
 					}
 				} else {
 
@@ -156,16 +156,16 @@ module.exports = {
 
 		Parceiro.checkToken(req.headers['authorization'], (err,rows) => {
 			if(rows.length>0){
-				return res.status(401).json({message:'Token inválido!'});
+				return res.status(401).json({mensagem:'Token inválido!'});
 			} else {
 				Parceiro.logout(req.headers['authorization'], (err,result) => {
 
 					if(result>0){
-						return res.status(200).json({message:'Logout realizado com sucesso!'});
+						return res.status(200).json({mensagem:'Logout realizado com sucesso!'});
 					}
 					if(err){
 						console.log(err)
-						res.status(500).json({message:'Falha ao realizar logout!'});
+						res.status(500).json({mensagem:'Falha ao realizar logout!'});
 					}
 				})
 			}
@@ -179,10 +179,10 @@ module.exports = {
 		Parceiro.remover(token.id_usuario, (err,result) => {
 			if(result>0){
 
-				return res.status(200).json({message:'Usuário removido com sucesso!'});
+				return res.status(200).json({mensagem:'Usuário removido com sucesso!'});
 			}
 			if(err){
-				res.status(500).json({message:'Falha ao remover usuário!'});
+				res.status(500).json({mensagem:'Falha ao remover usuário!'});
 			}
 		})
 	},
@@ -191,10 +191,10 @@ module.exports = {
 		Parceiro.getUsuario(token.nome, (err,result) => {
 			if(result){
 
-				return res.status(200).json({message: result});
+				return res.status(200).json( result);
 			}
 			if(err){
-				res.status(500).json({message:'Falha ao acessar usuário!'});
+				res.status(500).json({mensagem:'Falha ao acessar usuário!'});
 			}
 		})
 	}

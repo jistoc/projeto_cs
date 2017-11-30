@@ -18,8 +18,7 @@
 							<div v-if="sucesso"class="message is-success">
 
 								<div class="message-body text-left">
-									{{msg}}<br>
-									<router-link to="lista-parceiros">Listar Parceiros</router-link>
+									{{msg}}
 								</div>
 							</div>
 							<div class="field">
@@ -167,7 +166,7 @@ export default {
 				if(result.status == 200){
 					this.falha.status = false;
 					this.sucesso = true;
-					this.msg = result.body.message;
+					this.msg = result.body.mensagem;
 					console.log(result)
 
 				}
@@ -176,7 +175,7 @@ export default {
 				if(err.status){
 					this.sucesso = false;
 					this.falha.status = true;
-					this.falha.mensagem = err.body.message;
+					this.falha.mensagem = err.body.mensagem;
 				}
 			});
 		}
