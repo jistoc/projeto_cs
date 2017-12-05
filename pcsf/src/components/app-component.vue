@@ -27,6 +27,11 @@
 						</router-link>
 					</li>
 					<li>
+						<router-link to="consulta-p" exact-active-class="is-active">
+							<span class="icon"><i class="fa fa-search"></i></span> Consulta
+						</router-link>
+					</li>
+					<li>
 						<a href="#" class="" v-on:click="logout">
 							<span class="icon"><i class="fa fa-sign-out"></i></span> Sair
 						</a>

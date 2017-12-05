@@ -3,8 +3,12 @@
 		<div class="hero-body">
 			<div class="container has-text-centered">
 				<div class="column is-4 is-offset-4">
+					<input v-model="url" type="text" class="input" :disabled="sit"><br><br>
+					<a class="button is-block is-primary" v-on:click="definir()" >{{texto}}</a>
+					<br><br>
 					
-					<div class="box">
+					<router-link to='consulta-cli' class="button is-default is-block">Consultar Titulos - Cliente</router-link>  
+					<div class="box">1
 						<figure class="avatar">
 							<img src="img/credit.png" width="150">
 						</figure>
@@ -33,8 +37,7 @@
 						</form>
 					</div>
 					<p class="has-text-grey">
-						<router-link to='cadastro'> Cadastro</router-link> &nbsp;·&nbsp;
-						<a href="../">Recuperar Senha</a> &nbsp;
+						<router-link to='cadastro'> Cadastro</router-link>  &nbsp;
 					</p>
 				</div>
 			</div>
@@ -51,7 +54,10 @@ export default {
 			falha : {
 				status : false,
 				mensagem : 'Falha ao enviar formuário'
-			}
+			},
+			url : window.api_url,
+			sit : false,
+			texto : 'Definir url'
 		}
 
 	},
@@ -89,6 +95,11 @@ export default {
 					this.falha.mensagem = err.body.mensagem;
 				}
 			});
+		},
+		definir(){
+			window.api_url = this.url;
+			this.sit = !this.sit
+
 		}
 	},
 	beforeMount(){

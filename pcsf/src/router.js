@@ -7,11 +7,14 @@ import InfoComponent from './components/info-component.vue';
 import AlterarComponent from './components/alterar-component.vue';
 import ClienteComponent from './components/cliente-component.vue';
 import TituloComponent from './components/titulo-component.vue';
+import ConsultaParcaComponent from './components/consulta-parca-component.vue';
+import ConsultaCliComponent from './components/consulta-cli-component.vue';
 
 
 const router = new VueRouter({
    routes : [
     { name : 'login', path : '/login', component: LoginComponent },
+    { name : 'consulta-cli', path : '/consulta-cli', component: ConsultaCliComponent },
     { name : 'cadastro', path : '/cadastro', component: CadParceiroComponent },
     { name : 'lista-parceiros', path : '/lista-parceiros', component: ListaParceirosComponent },
     { name : 'home', path : '/inicio', component: AppComponent ,
@@ -22,7 +25,9 @@ const router = new VueRouter({
 
             { path: '/inicio/cliente', name: 'cliente', component: ClienteComponent },
 
-            { path: '/inicio/titulo', name: 'titulo', component: TituloComponent }
+            { path: '/inicio/titulo', name: 'titulo', component: TituloComponent },
+
+            { path: '/inicio/consulta-p', name: 'consulta-p', component: ConsultaParcaComponent }
         ],
     }
   ],

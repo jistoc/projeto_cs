@@ -62,8 +62,12 @@ module.exports = {
 		Cliente.getAll( (err,result) => {
 			if(err) 
 				res.status(500).json({mensagem:err});
-			else
+			else{
+				for(let i = 0; i<result.length;i++){
+					result[i].id = result[i].id_cliente;
+				}
 				res.status(200).json(result);
+			}
 		});	
 	},
 	alterar : (req,res,next) => {
@@ -126,7 +130,7 @@ module.exports = {
 		let token = decode(req.headers['authorization']);
 		Cliente.getCliente(req.params.id, (err,result) => {
 			if(result){
-
+				result.id = result.id_cliente;
 				return res.status(200).json( result);
 			}
 			if(err){

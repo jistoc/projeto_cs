@@ -8,6 +8,7 @@ const port = process.env.PORT || 80;
 const parceiro = require('./routes/parceiro');
 const cliente = require('./routes/cliente');
 const titulo = require('./routes/titulo');
+const consulta = require('./routes/consulta');
 const login = require('./routes/login');
 const validator = require('express-validator');
 const db = require('./config/db');
@@ -40,6 +41,7 @@ require('./config/passport')(passport);
 
 app.use(api_url + 'parceiro', parceiro);
 app.use(api_url + 'cliente', cliente);
+app.use(api_url + 'consulta', consulta);
 app.use(api_url + 'titulo', titulo);
 app.use(api_url, login);
 

@@ -43,7 +43,7 @@
 									<td>
 										<a class="button is-success " v-on:click="alterar(cliente)">Alterar</a>
 										&nbsp;
-										<a class="button is-danger " v-on:click="remover(cliente.id_cliente)">Remover</a>
+										<a class="button is-danger " v-on:click="remover(cliente)">Remover</a>
 									</td>
 								</tr>
 							</tbody>
@@ -145,16 +145,18 @@ export default {
 			this.nome_cliente = cliente.nome_cliente;
 			this.cpf = cliente.cpf;
 			this.op = true;
-			this.id = cliente.id_cliente;
+			this.id = cliente.id_cliente ? cliente.id_cliente : cliente.id ;
 		},
 		remover(id){
-			this.$http.delete(api_url + 'cliente/'+id, { 
+			var aux = id.id_cliente ? id.id_cliente : id.id ;
+			this.$http.delete(api_url + 'cliente/'+aux, { 
 				headers : {
 					Authorization : localStorage.getItem('token')
 				}
 			})
 			.then( result => {
-				alert(result.body.mensagem)
+				if(result.body.mensagem)
+					alert(result.body.mensagem)
 				this.listar();
 			})
 			.catch( err => {

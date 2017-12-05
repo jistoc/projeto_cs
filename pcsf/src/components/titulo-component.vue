@@ -15,7 +15,7 @@
 									<div class="control">
 										<div class="select">
 											<select v-model="id_cliente"  class="select" :disabled="disabled">
-												<option v-for="cliente in listaCliente" :value="cliente.id_cliente">{{cliente.nome_cliente}}</option>
+												<option v-for="cliente in listaCliente" :value="cliente.id_cliente ? cliente.id_cliente : cliente.id ">{{cliente.nome_cliente}}</option>
 											</select>
 										</div>
 									</div>
@@ -97,7 +97,7 @@
 									<td>
 										<a class="button is-success " v-on:click="alterar(lista)">Alterar</a>
 										&nbsp;
-										<a class="button is-danger " v-on:click="remover(lista.id_titulo)">Remover</a>
+										<a class="button is-danger " v-on:click="remover(lista)">Remover</a>
 									</td>					
 								</tr>
 							</tbody>
@@ -174,10 +174,12 @@ export default {
 					id_parceiro : id_do_parca,
 					valor : this.valor,
 					descricao : this.descricao,
-					data_pagamento : this.data_pagamento,
 					data_emissao : this.data_emissao,
 					situacao : this.situacao
 				};
+				if(this.data_pagamento!==''){
+					dados.data_pagamento = this.data_pagamento;
+				}
 				console.log(dados);
 				this.$http.post(api_url + 'titulo', dados, {
 					headers : {
@@ -210,9 +212,12 @@ export default {
 					
 					valor : this.valor,
 					descricao : this.descricao,
-					data_pagamento : this.data_pagamento,
 					data_emissao : this.data_emissao,
 					situacao : this.situacao
+				}
+				
+				if(this.data_pagamento!==''){
+					dados.data_pagamento = this.data_pagamento;
 				}
 				this.$http.put(api_url + 'titulo/'+this.id, dados, {
 					headers : {
@@ -236,7 +241,10 @@ export default {
 			}
 		},
 		remover(id){
-			this.$http.delete(api_url + 'titulo/'+id, { 
+			console.log(id);
+			let aux = id.id_titulo ? id.id_titulo : id.id;
+			console.log(aux);
+			this.$http.delete(api_url + 'titulo/'+aux, { 
 				headers : {
 					Authorization : localStorage.getItem('token')
 				}
@@ -259,7 +267,7 @@ export default {
 			this.descricao = titulo.descricao;
 			this.data_emissao = titulo.data_emissao;
 			this.data_pagamento = titulo.data_pagamento;
-			this.id = titulo.id_titulo;
+			this.id = titulo.id_titulo ? titulo.id_titulo : titulo.id ;
 			this.op = true;
 			this.disabled = true;
 		},

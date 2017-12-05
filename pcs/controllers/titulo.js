@@ -5,15 +5,18 @@ module.exports = {
 	novo : (req,res,next) => {
 
 		console.log(req.body);
-
-		if( !req.body.id_parceiro || !req.body.id_cliente
+		let token = decode(req.headers['authorization']);
+		console.log(token);
+		if( !req.body.id_cliente
 			|| !req.body.valor || !req.body.data_emissao 
 			|| !req.body.descricao || !req.body.situacao ){
 
 			res.status(400).json({mensagem : "corpo do pedido inválido!"});
 			return;
 		}
-
+		if(!req.body.id_parceiro || req.body.id_parceiro==undefined || req.body.id_parceiro == '' || req.body.id_parceiro == ' '){
+			req.body.id_parceiro = token.id_parceiro;
+		}
 		req.checkBody("descricao", "Descrição inválida!").isLength({ max: 255 });
 		req.checkBody("valor", "Valor inválido!").isLength({ min: 2 });
 		req.checkBody("data_emissao", "Data Emissão inválida!").matches(/^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/);
@@ -66,8 +69,12 @@ module.exports = {
 		Titulo.getAll( token.id_parceiro, (err,result) => {
 			if(err) 
 				res.status(500).json({mensagem:err});
-			else
+			else{
+				for(let i = 0; i<result.length;i++){
+					result[i].id = result[i].id_titulo;
+				}
 				res.status(200).json(result);
+			}
 		});	
 	},
 	alterar : (req,res,next) => {
@@ -132,6 +139,40 @@ module.exports = {
 	getTitulo : (req,res,next) => {
 		let token = decode(req.headers['authorization']);
 		Titulo.getTitulo(req.params.id, (err,result) => {
+			if(result){
+
+				return res.status(200).json( result);
+			}
+			if(err){
+				res.status(500).json({mensagem:'Falha ao acessar titulo!'});
+			}
+		})
+	},
+	getTituloCliente : (req,res,next) => {
+		Titulo.getTituloCliente(req.params.cpf, (err,result) => {
+			if(result){
+
+				return res.status(200).json( result);
+			}
+			if(err){
+				
+				res.status(500).json({mensagem:'Falha ao acessar titulo!'});
+			}
+		})
+	},
+	getTituloParceiro : (req,res,next) => {
+		Titulo.getTituloParceiro(req.params.cpf, (err,result) => {
+			if(result){
+
+				return res.status(200).json( result);
+			}
+			if(err){
+				res.status(500).json({mensagem:'Falha ao acessar titulo!'});
+			}
+		})
+	},
+	getTituloSituacao : (req,res,next) => {
+		Titulo.getTituloSituacao(req.params.cpf,req.params.id, (err,result) => {
 			if(result){
 
 				return res.status(200).json( result);

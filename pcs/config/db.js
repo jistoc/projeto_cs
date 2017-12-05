@@ -1,8 +1,8 @@
 const mysql = require('mysql');
 const async = require('async');
 
-const PRODUCTION_DB = 'pcs';
-const TEST_DB = 'pcs';
+const PRODUCTION_DB = 'sql10202259';
+const TEST_DB = 'sql10202259';
 
 exports.MODE_TEST = 'mode_test';
 exports.MODE_PRODUCTION = 'mode_production';
@@ -14,9 +14,9 @@ var state = {
 
 exports.connect = function(mode, done) {
 	state.pool = mysql.createPool({
-		host: 'localhost',
-		user: 'root',
-		password: 'root',
+		host: 'sql10.freemysqlhosting.net',
+		user: 'sql10202259',
+		password: 'Vs7zyeEkND',
 		database: mode === exports.MODE_PRODUCTION ? PRODUCTION_DB : TEST_DB
 	})
 
